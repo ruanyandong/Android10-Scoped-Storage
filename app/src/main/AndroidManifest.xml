@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.scopedstoragedemo">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+<!--    在Android 11中，如果你想要管理整个设备上的文件，你必须在AndroidManifest.xml中声明MANAGE_EXTERNAL_STORAGE权限，使用Intent跳转到一个专门的授权页面，引导用户手动授权-->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+<!--
+目前Android 10系统对于作用域存储适配的要求还不是那么严格，
+如果你的项目指定的targetSdkVersion低于29，那么即使不做任何作用域存储方面的适配，你的项目也可以成功运行到Android 10手机上。
+-->
+
+<!--
+而如果你的targetSdkVersion已经指定成了29，也没有关系，假如你还不想进行作用域存储的适配，只需要在AndroidManifest.xml中加入如下配置即可：
+
+<manifest ... >
+  <application android:requestLegacyExternalStorage="true" ...>
+    ...
+  </application>
+</manifest>
+
+这段配置表示，即使在Android 10系统上，仍然允许使用之前遗留的外置存储空间的用法来运行程序，这样就不用对代码进行任何修改了。
+在未来的Android系统版本中，这段配置随时都可能会失效（Android 11中已强制启用作用域存储，这段配置在Android 11当中已不再有效）
+
+-->
+    <application
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:usesCleartextTraffic="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true"
+        tools:targetApi="m"
+        tools:ignore="AllowBackup">
+        <activity android:name=".BrowseAlbumActivity" />
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
